@@ -6,9 +6,9 @@ import requests
 import json
 import os
 
-# ─────────────────────────────────────────
+
 # PAGE CONFIG
-# ─────────────────────────────────────────
+
 st.set_page_config(
     page_title="SalesIQ — AI Analytics",
     page_icon="📊",
@@ -16,9 +16,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─────────────────────────────────────────
+
 # DARK THEME CSS
-# ─────────────────────────────────────────
+
 st.markdown("""
 <style>
 html, body, [class*="css"] {
@@ -99,9 +99,9 @@ hr { border-color: #2a3550; }
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────
+
 # GROQ API KEY — reads from environment or secrets.toml
-# ─────────────────────────────────────────
+
 def get_api_key():
     try:
         key = st.secrets.get("GROQ_API_KEY", "")
@@ -113,9 +113,9 @@ def get_api_key():
 
 GROQ_API_KEY = get_api_key()
 
-# ─────────────────────────────────────────
+
 # DATA LOADING — auto-detects local vs cloud
-# ─────────────────────────────────────────
+
 def get_data_dir():
     # Check current directory first (for cloud / local same folder)
     if os.path.exists("monthly_actual.csv"):
@@ -146,9 +146,9 @@ def load_data():
 (monthly, forecast, seg_actual, seg_fore, reg_actual,
  reg_fore, cat_actual, cat_fore, seasonality, products, combined) = load_data()
 
-# ─────────────────────────────────────────
+
 # CHART COLORS
-# ─────────────────────────────────────────
+
 COLORS = {
     "blue":   "#4fc3f7",
     "teal":   "#00bfa5",
@@ -178,9 +178,9 @@ def dark_layout(title="", h=400):
         hovermode="x unified"
     )
 
-# ─────────────────────────────────────────
+
 # GROQ AI CHAT
-# ─────────────────────────────────────────
+
 def build_context():
     total_sales  = monthly["Sales"].sum()
     avg_growth   = monthly["Sales_Growth_%"].mean()
@@ -263,9 +263,9 @@ def ask_gemini(question, history):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# ─────────────────────────────────────────
+
 # SIDEBAR NAVIGATION
-# ─────────────────────────────────────────
+
 with st.sidebar:
     st.markdown("""
     <div style='text-align:center; padding:16px 0 24px 0;'>
@@ -323,9 +323,9 @@ with st.sidebar:
 
 page = st.session_state.page
 
-# ═══════════════════════════════════════════════════════
+
 # PAGE 1 — ACTUAL OVERVIEW
-# ═══════════════════════════════════════════════════════
+
 if page == 0:
     st.markdown("""
     <div class='page-banner'>
@@ -408,9 +408,9 @@ if page == 0:
     st.plotly_chart(fig4, use_container_width=True)
 
 
-# ═══════════════════════════════════════════════════════
+
 # PAGE 2 — ACTUAL BREAKDOWN
-# ═══════════════════════════════════════════════════════
+
 elif page == 1:
     st.markdown("""
     <div class='page-banner'>
@@ -495,9 +495,8 @@ elif page == 1:
     st.dataframe(seg_summary, use_container_width=True, hide_index=True)
 
 
-# ═══════════════════════════════════════════════════════
 # PAGE 3 — FORECAST OVERVIEW
-# ═══════════════════════════════════════════════════════
+
 elif page == 2:
     st.markdown("""
     <div class='page-banner'>
@@ -608,9 +607,8 @@ elif page == 2:
     st.dataframe(fore_table, use_container_width=True, hide_index=True)
 
 
-# ═══════════════════════════════════════════════════════
 # PAGE 4 — FORECAST BREAKDOWN
-# ═══════════════════════════════════════════════════════
+
 elif page == 3:
     st.markdown("""
     <div class='page-banner'>
@@ -691,9 +689,8 @@ elif page == 3:
     )
 
 
-# ═══════════════════════════════════════════════════════
 # PAGE 5 — AI CHAT
-# ═══════════════════════════════════════════════════════
+
 elif page == 4:
     st.markdown("""
     <div class='page-banner'>
